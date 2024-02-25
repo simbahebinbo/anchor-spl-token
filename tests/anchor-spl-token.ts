@@ -27,7 +27,6 @@ describe("create-tokens", () => {
 
 
     it("Create token!", async () => {
-
         console.log(mintToken.publicKey.toBase58())
         console.log(tokenAccount.toBase58())
 
@@ -48,21 +47,25 @@ describe("create-tokens", () => {
 
 
     it("Token transfer", async () => {
+        let receiver = anchor.web3.Keypair.generate()
 
-        let reciever = anchor.web3.Keypair.generate()
+        const signature = await provider.connection.requestAirdrop(receiver.publicKey, anchor.web3.LAMPORTS_PER_SOL)
+        const latestBlockHash = await provider.connection.getLatestBlockhash();
+        await provider.connection.confirmTransaction({
+            blockhash: latestBlockHash.blockhash,
+            lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+            signature: signature
+        })
 
-        const signature = await provider.connection.requestAirdrop(reciever.publicKey, anchor.web3.LAMPORTS_PER_SOL)
-        await provider.connection.confirmTransaction(signature)
-
-        let recieverTokenAccountKeypair = anchor.web3.Keypair.generate()
-        await createAccount(provider.connection, reciever, mintToken.publicKey, reciever.publicKey, recieverTokenAccountKeypair);
+        let receiverTokenAccountKeypair = anchor.web3.Keypair.generate()
+        await createAccount(provider.connection, receiver, mintToken.publicKey, receiver.publicKey, receiverTokenAccountKeypair);
 
         try {
             const tx = await program.methods.transferToken(new anchor.BN(10 ** 9 * 90))
                 .accounts({
                     mintToken: mintToken.publicKey,
                     fromAccount: tokenAccount,
-                    toAccount: recieverTokenAccountKeypair.publicKey,
+                    toAccount: receiverTokenAccountKeypair.publicKey,
                     associateTokenProgram
                 })
                 .signers([])
@@ -72,13 +75,10 @@ describe("create-tokens", () => {
         } catch (error) {
             console.log(error)
         }
-
-
     })
 
 
     it("Set Authority token!", async () => {
-
         let new_signer = anchor.web3.Keypair.generate()
         try {
             const tx = await program.methods.setAuthorityToken(0)
@@ -96,8 +96,6 @@ describe("create-tokens", () => {
     });
 
     it("Freeze token!", async () => {
-
-
         const tx = await program.methods.freezeToken()
             .accounts({
                 mintToken: mintToken.publicKey,
@@ -109,8 +107,6 @@ describe("create-tokens", () => {
     });
 
     it("Unfreeze token!", async () => {
-
-
         const tx = await program.methods.unFreezeToken()
             .accounts({
                 mintToken: mintToken.publicKey,
@@ -122,7 +118,6 @@ describe("create-tokens", () => {
     });
 
     it("Burn token!", async () => {
-
         try {
             const tx = await program.methods.burnToken(new anchor.BN(10 ** 9 * 10))
                 .accounts({
@@ -135,12 +130,9 @@ describe("create-tokens", () => {
         } catch (error) {
             console.log(error)
         }
-
     });
 
     it("Close token!", async () => {
-
-
         const tx = await program.methods.closeToken()
             .accounts({
                 mintToken: mintToken.publicKey,
@@ -150,6 +142,5 @@ describe("create-tokens", () => {
             .rpc();
         console.log("Your transaction signature", tx);
     });
-
 });
 
