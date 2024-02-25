@@ -58,7 +58,7 @@ describe("create-tokens", () => {
         await createAccount(provider.connection, reciever, mintToken.publicKey, reciever.publicKey, recieverTokenAccountKeypair);
 
         try {
-            const tx = await program.methods.transerToken(new anchor.BN(10 ** 9 * 90))
+            const tx = await program.methods.transferToken(new anchor.BN(10 ** 9 * 90))
                 .accounts({
                     mintToken: mintToken.publicKey,
                     fromAccount: tokenAccount,

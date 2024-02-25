@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::{Mint, Token, TokenAccount}};
-use mpl_token_metadata::state::DataV2;
+use anchor_spl::metadata::mpl_token_metadata::types::DataV2;
 
 declare_id!("GA9pS4npTndsaY3BdarznBLGJPrLZGHLJqLzdTZJgn3b");
 
@@ -10,9 +10,6 @@ pub mod anchor_spl_token {
     use anchor_spl::{associated_token, metadata::{create_master_edition_v3, create_metadata_accounts_v3}, token::{burn, Burn, close_account, CloseAccount, freeze_account, FreezeAccount, initialize_mint, InitializeMint, mint_to, MintTo, set_authority, SetAuthority, spl_token::instruction::AuthorityType, thaw_account, ThawAccount, transfer, Transfer}};
 
     use super::*;
-
-// use mpl_token_metadata::instruction::CreateMasterEdition;
-
 
     pub fn create_token(ctx: Context<CreateToken>, decimals: u8, amount: u64) -> Result<()> {
         system_program::create_account(
@@ -61,7 +58,7 @@ pub mod anchor_spl_token {
         Ok(())
     }
 
-    pub fn transer_token(ctx: Context<TransferToken>, amount: u64) -> Result<()> {
+    pub fn transfer_token(ctx: Context<TransferToken>, amount: u64) -> Result<()> {
         msg!("Started {:} tokens transfer from account {:} to {:}",amount,ctx.accounts.from_account.key(),ctx.accounts.to_account.key());
 
         transfer(
@@ -80,19 +77,19 @@ pub mod anchor_spl_token {
         let authority_type;
         match authority_value {
             0 => {
-                authority_type = anchor_spl::token::spl_token::instruction::AuthorityType::MintTokens;
+                authority_type = AuthorityType::MintTokens;
                 account_or_mint = ctx.accounts.mint_token.to_account_info();
             }
             1 => {
-                authority_type = anchor_spl::token::spl_token::instruction::AuthorityType::FreezeAccount;
+                authority_type = AuthorityType::FreezeAccount;
                 account_or_mint = ctx.accounts.mint_token.to_account_info();
             }
             2 => {
-                authority_type = anchor_spl::token::spl_token::instruction::AuthorityType::AccountOwner;
+                authority_type = AuthorityType::AccountOwner;
                 account_or_mint = ctx.accounts.token_account.to_account_info();
             }
             _ => {
-                authority_type = anchor_spl::token::spl_token::instruction::AuthorityType::CloseAccount;
+                authority_type = AuthorityType::CloseAccount;
                 account_or_mint = ctx.accounts.token_account.to_account_info();
             }
         }
@@ -123,6 +120,7 @@ pub mod anchor_spl_token {
             ),
             amount,
         )?;
+
         Ok(())
     }
 
@@ -137,7 +135,6 @@ pub mod anchor_spl_token {
                 },
             )
         )?;
-
 
         Ok(())
     }
@@ -246,7 +243,7 @@ pub mod anchor_spl_token {
                     token_program: ctx.accounts.token_program.to_account_info(),
                 },
             ),
-            Some(data.suply),
+            Some(data.supply),
         )?;
 
         Ok(())
@@ -259,10 +256,7 @@ pub struct MetadataData {
     pub symbol: String,
     pub uri: String,
     pub seller_fee_basis_points: u16,
-    pub suply: u64,
-    // pub creators: Option<Vec<Creator>>,
-    // pub collection: Option<Collection>,
-    // pub uses: Option<Uses>,
+    pub supply: u64,
 }
 
 #[derive(Accounts)]
