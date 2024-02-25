@@ -9,9 +9,12 @@ rustc 1.76.0 (07dca489a 2024-02-04)
 
 ```shell
 $ solana --version
-solana-cli 1.17.22 (src:dbf06e25; feat:3580551090, client:SolanaLabs)
+solana-cli 1.18.3 (src:6f13e1c2; feat:3352961542, client:SolanaLabs)
+```
+
+```shell
 $ solana-test-validator --version
-solana-test-validator 1.17.22 (src:dbf06e25; feat:3580551090, client:SolanaLabs)
+solana-test-validator 1.18.3 (src:6f13e1c2; feat:3352961542, client:SolanaLabs)
 ```
 
 ```shell
