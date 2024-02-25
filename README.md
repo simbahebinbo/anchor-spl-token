@@ -34,6 +34,12 @@ $ yarn --version
 1.22.21
 ```
 
+* 编译
+
+```shell
+$ anchor build
+```
+
 * 运行单元测试
 
 ```shell
