@@ -1,5 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import {Program} from "@coral-xyz/anchor";
+// @ts-ignore
 import {AnchorSplToken} from "../target/types/anchor_spl_token";
 import {TOKEN_PROGRAM_ID} from "@coral-xyz/anchor/dist/cjs/utils/token";
 import {createAccount} from "@solana/spl-token";
@@ -31,6 +32,7 @@ describe("create-tokens", () => {
         console.log(tokenAccount.toBase58())
 
         try {
+
             const tx = await program.methods.createToken(9, new anchor.BN(10 ** 9 * 100))
                 .accounts({
                     mintToken: mintToken.publicKey,

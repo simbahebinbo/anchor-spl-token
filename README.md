@@ -2,19 +2,19 @@
 
 ```shell
 $ cargo version
-cargo 1.76.0 (c84b36747 2024-01-18)
+cargo 1.79.0 (ffa9cf99a 2024-06-03)
 $ rustc --version
-rustc 1.76.0 (07dca489a 2024-02-04)
+rustc 1.79.0 (129f3b996 2024-06-10)
 ```
 
 ```shell
 $ solana --version
-solana-cli 1.18.3 (src:6f13e1c2; feat:3352961542, client:SolanaLabs)
+solana-cli 1.18.12 (src:b9c13825; feat:4215500110, client:SolanaLabs)
 ```
 
 ```shell
 $ solana-test-validator --version
-solana-test-validator 1.18.3 (src:6f13e1c2; feat:3352961542, client:SolanaLabs)
+solana-test-validator 1.18.12 (src:b9c13825; feat:4215500110, client:SolanaLabs)
 ```
 
 ```shell
@@ -24,17 +24,17 @@ anchor-cli 0.29.0
 
 ```shell
 $ node --version
-v20.11.1
+v20.15.0
 ```
 
 ```shell
 $ npm --version
-10.4.0
+10.8.1
 ```
 
 ```shell
 $ yarn --version
-1.22.21
+1.22.22
 ```
 
 * 编译
@@ -46,6 +46,7 @@ $ anchor build
 * 运行单元测试
 
 ```shell
+$ yarn install
 $ anchor test
 ```
 
